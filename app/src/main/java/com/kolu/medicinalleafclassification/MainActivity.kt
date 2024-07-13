@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
             if (data != null) {
-                if (requestCode == 1){
+                if (requestCode == 1 && resultCode == RESULT_OK){
                     imgBitmap = data.extras?.get("data") as Bitmap
                     binding.imvLoadedImage.setImageBitmap(imgBitmap)
                     binding.imvLoadedImage.visibility = View.VISIBLE
