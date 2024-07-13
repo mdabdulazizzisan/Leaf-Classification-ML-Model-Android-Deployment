@@ -2,12 +2,14 @@ package com.kolu.medicinalleafclassification
 
 import android.Manifest
 import android.Manifest.permission.CAMERA
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +22,13 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 
     lateinit var imgBitmap: Bitmap
+
+    private val classes = arrayOf(
+        "Azadirachta indica", "Calotropis gigantea", "Centella asiatica",
+        "Hibiscus rosa-sinensis", "Justicia adhatoda", "Kalanchoe pinnata",
+        "Mikania micrantha", "Ocimum tenuiflorum", "Phyllanthus emblica", "Terminalia arjuna"
+    )
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +43,31 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnCamera.setOnClickListener {takeFromCamera()}
         binding.btnGallery.setOnClickListener { takeFromGallery() }
+        binding.btnPredict.setOnClickListener { predict() }
 
     }
 
+    fun predict(){
+        val runModel = RunModel()
+        val imgByteBuffer = runModel.preprocess(imgBitmap)
+        val confidenceArray = runModel.run(applicationContext, imgByteBuffer)
+        var maxConfidence = 0f
+        var maxConfidenceIndex = 0
+        for (index in 0 .. 9){
+            if (confidenceArray != null && confidenceArray[index] > maxConfidence){
+                maxConfidence = confidenceArray[index]
+                maxConfidenceIndex = index
+            }
+        }
+        binding.tvClassOfLeave.text = classes[maxConfidenceIndex]
+
+
+
+//        val logArray = confidenceArray?.joinToString(", ", "[", "]")
+//        if (logArray != null) {
+//            Log.d("FloatArrayLog", logArray)
+//        }
+    }
 
     fun takeFromCamera(){
         if(checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
