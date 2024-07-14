@@ -54,6 +54,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun predict(){
+        if(binding.imvLoadedImage.visibility == View.INVISIBLE){
+            Toast.makeText(applicationContext, "Load an image first", Toast.LENGTH_LONG).show()
+            return
+        }
         val runModel = RunModel()
         val imgByteBuffer = runModel.preprocess(imgBitmap)
         val confidenceArray = runModel.run(applicationContext, imgByteBuffer)
