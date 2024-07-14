@@ -13,4 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
-.tflite
+ app/src/main/ml/
