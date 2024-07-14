@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -40,6 +41,11 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        Toast.makeText(applicationContext,
+            "app logo: Flaticon\n" +
+                    "model trained: Ashik\n" +
+                    "android deployment: Zisan", Toast.LENGTH_SHORT).show()
 
         binding.btnCamera.setOnClickListener {takeFromCamera()}
         binding.btnGallery.setOnClickListener { takeFromGallery() }
